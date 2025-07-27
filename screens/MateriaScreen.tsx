@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -7,11 +7,11 @@ import {
   Modal,
   TextInput,
   StyleSheet,
-  Alert,
   Dimensions,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ThemeContext } from "./ThemeContext"; // ajuste o caminho conforme seu projeto
 import { LineChart } from "react-native-chart-kit";
 
 interface Nota {
@@ -22,6 +22,9 @@ export default function MateriaScreen() {
   const route = useRoute();
   const { ano, materia }: { ano: string; materia: { nome: string; media: number } } =
     route.params as any;
+
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
 
   const [notas, setNotas] = useState<Nota[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -90,21 +93,33 @@ export default function MateriaScreen() {
   const status = calcularMedia() >= materia.media ? "Aprovado" : "Reprovado";
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}>{materia.nome}</Text>
-      <Text style={styles.subtitulo}>Média Necessária: {materia.media.toFixed(1)}</Text>
+    <View style={[styles.container, { backgroundColor: isDark ? "#000" : "#fff" }]}>
+      <Text style={[styles.titulo, { color: isDark ? "#fff" : "#6643a6" }]}>
+        {materia.nome}
+      </Text>
+      <Text style={[styles.subtitulo, { color: isDark ? "#ccc" : "#333" }]}>
+        Média Necessária: {materia.media.toFixed(1)}
+      </Text>
 
       <FlatList
         data={notas}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <View style={styles.card}>
-            <Text style={styles.textoNota}>Nota {index + 1}: {item.valor}</Text>
+          <View style={[styles.card, { backgroundColor: isDark ? "#222" : "#ddd" }]}>
+            <Text style={[styles.textoNota, { color: isDark ? "#fff" : "#000" }]}>
+              Nota {index + 1}: {item.valor}
+            </Text>
             <View style={styles.botoesNota}>
-              <TouchableOpacity style={styles.botaoEditar} onPress={() => abrirEdicao(index)}>
+              <TouchableOpacity
+                style={[styles.botaoEditar, { backgroundColor: "#4b79ff" }]}
+                onPress={() => abrirEdicao(index)}
+              >
                 <Text style={styles.textoEditar}>Editar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.botaoExcluir} onPress={() => excluirNota(index)}>
+              <TouchableOpacity
+                style={[styles.botaoExcluir, { backgroundColor: "#ff4d4d" }]}
+                onPress={() => excluirNota(index)}
+              >
                 <Text style={styles.textoExcluir}>Excluir</Text>
               </TouchableOpacity>
             </View>
@@ -112,7 +127,9 @@ export default function MateriaScreen() {
         )}
       />
 
-      <Text style={styles.resultado}>Média: {calcularMedia().toFixed(2)} - {status}</Text>
+      <Text style={[styles.resultado, { color: isDark ? "#fff" : "#333" }]}>
+        Média: {calcularMedia().toFixed(2)} - {status}
+      </Text>
 
       {notas.length > 0 && (
         <LineChart
@@ -123,11 +140,15 @@ export default function MateriaScreen() {
           width={Dimensions.get("window").width - 40}
           height={220}
           chartConfig={{
-            backgroundGradientFrom: "#fff",
-            backgroundGradientTo: "#fff",
+            backgroundGradientFrom: isDark ? "#000" : "#fff",
+            backgroundGradientTo: isDark ? "#000" : "#fff",
             decimalPlaces: 1,
-            color: (opacity = 1) => `rgba(102, 67, 166, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            color: (opacity = 1) =>
+              isDark
+                ? `rgba(102, 67, 166, ${opacity})`
+                : `rgba(102, 67, 166, ${opacity})`,
+            labelColor: (opacity = 1) =>
+              isDark ? `rgba(255, 255, 255, ${opacity})` : `rgba(0, 0, 0, ${opacity})`,
             propsForDots: {
               r: "5",
               strokeWidth: "2",
@@ -142,41 +163,72 @@ export default function MateriaScreen() {
         />
       )}
 
-      <TouchableOpacity style={styles.fab} onPress={() => setModalVisible(true)}>
+      <TouchableOpacity
+        style={[styles.fab, { backgroundColor: "#6643a6" }]}
+        onPress={() => setModalVisible(true)}
+      >
         <Text style={styles.fabTexto}>+</Text>
       </TouchableOpacity>
 
       <Modal visible={modalVisible} transparent animationType="fade">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalBox}>
-            <Text style={styles.label}>Digite a nova nota:</Text>
+        <View style={[styles.modalContainer, { backgroundColor: "#00000099" }]}>
+          <View style={[styles.modalBox, { backgroundColor: isDark ? "#222" : "#ddd" }]}>
+            <Text style={[styles.label, { color: isDark ? "#fff" : "#000" }]}>
+              Digite a nova nota:
+            </Text>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                {
+                  backgroundColor: isDark ? "#333" : "#eee",
+                  color: isDark ? "#fff" : "#000",
+                },
+              ]}
               value={novaNota}
               onChangeText={setNovaNota}
               placeholder="Ex: 8.5"
+              placeholderTextColor={isDark ? "#aaa" : "#666"}
               keyboardType="numeric"
             />
             <TouchableOpacity style={styles.botaoRoxo} onPress={adicionarNota}>
               <Text style={styles.textoBotao}>Adicionar Nota</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.botaoCancelar, { backgroundColor: "#999" }]}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.textoBotao}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
       <Modal visible={modalEditarVisible} transparent animationType="fade">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalBox}>
-            <Text style={styles.label}>Editar nota:</Text>
+        <View style={[styles.modalContainer, { backgroundColor: "#00000099" }]}>
+          <View style={[styles.modalBox, { backgroundColor: isDark ? "#222" : "#ddd" }]}>
+            <Text style={[styles.label, { color: isDark ? "#fff" : "#000" }]}>Editar nota:</Text>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                {
+                  backgroundColor: isDark ? "#333" : "#eee",
+                  color: isDark ? "#fff" : "#000",
+                },
+              ]}
               value={notaEditando}
               onChangeText={setNotaEditando}
               placeholder="Ex: 7.5"
+              placeholderTextColor={isDark ? "#aaa" : "#666"}
               keyboardType="numeric"
             />
             <TouchableOpacity style={styles.botaoRoxo} onPress={editarNota}>
               <Text style={styles.textoBotao}>Salvar Alteração</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.botaoCancelar, { backgroundColor: "#999" }]}
+              onPress={() => setModalEditarVisible(false)}
+            >
+              <Text style={styles.textoBotao}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -186,11 +238,10 @@ export default function MateriaScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", padding: 20 },
+  container: { flex: 1, padding: 20 },
   titulo: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#6643a6",
     textAlign: "center",
     marginBottom: 5,
   },
@@ -200,7 +251,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   card: {
-    backgroundColor: "#ddd",
     padding: 15,
     marginVertical: 5,
     borderRadius: 10,
@@ -211,13 +261,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 20,
     textAlign: "center",
-    color: "#333",
   },
   fab: {
     position: "absolute",
     bottom: 20,
     right: 20,
-    backgroundColor: "#6643a6",
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -230,12 +278,10 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: "#00000099",
     justifyContent: "center",
     alignItems: "center",
   },
   modalBox: {
-    backgroundColor: "#ddd",
     padding: 20,
     borderRadius: 20,
     width: "80%",
@@ -245,9 +291,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   input: {
-    backgroundColor: "#eee",
-    padding: 10,
     borderRadius: 10,
+    padding: 10,
     marginBottom: 10,
     textAlign: "center",
   },
@@ -255,6 +300,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#6643a6",
     padding: 10,
     borderRadius: 10,
+    marginBottom: 10,
   },
   textoBotao: {
     color: "#fff",
@@ -267,7 +313,6 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   botaoExcluir: {
-    backgroundColor: "#ff4d4d",
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 8,
@@ -277,7 +322,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   botaoEditar: {
-    backgroundColor: "#4b79ff",
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 8,
@@ -285,5 +329,9 @@ const styles = StyleSheet.create({
   textoEditar: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  botaoCancelar: {
+    padding: 10,
+    borderRadius: 10,
   },
 });
