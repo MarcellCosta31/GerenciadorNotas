@@ -16,6 +16,8 @@ Gerenciador de Notas é um aplicativo mobile desenvolvido em React Native com ba
 - React Navigation
 - React Native Chart Kit (gráficos)
 
+📷 Capturas de Tela
+![1](https://github.com/MarcellCosta31/GerenciadorNotas/blob/master/imagens/1.jpeg)
 
 🚀 Em breve
 - Notificações de desempenho
