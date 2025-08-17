@@ -6,7 +6,6 @@ import AnoScreen from './screens/AnoScreen';
 import MateriaScreen from './screens/MateriaScreen';
 import ResumoScreen from './screens/ResumoScreen';
 import AnotacoesScreen from './screens/AnotacoesScreen';
-import PerfilScreen from './screens/PerfilScreen';
 
 import { ThemeProvider } from "./screens/ThemeContext";
 
@@ -26,7 +25,6 @@ export default function App() {
         <Stack.Screen name="Materia" component={MateriaScreen} />
         <Stack.Screen name="Resumo" component={ResumoScreen} />
         <Stack.Screen name="Anotacoes" component={AnotacoesScreen} />
-        <Stack.Screen name="Perfil" component={PerfilScreen} />
       </Stack.Navigator>
     </NavigationContainer>
 
