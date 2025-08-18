@@ -71,7 +71,7 @@ Ele ajuda estudantes (ou professores) a organizarem matérias, registrarem notas
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/gerenciador-notas.git
+   git clone https://github.com/MarcellCosta31/GerenciadorNotas.git
    cd GerenciadorNotas
    npm install
    expo start
