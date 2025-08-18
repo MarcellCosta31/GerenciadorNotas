@@ -1,23 +1,58 @@
-📚 Gerenciador de Notas
-Gerenciador de Notas é um aplicativo mobile desenvolvido em React Native com banco de dados local, que permite organizar e acompanhar o desempenho acadêmico de forma simples e intuitiva. Com ele, você pode registrar anos letivos, matérias, notas, e acompanhar se está aprovado ou reprovado em cada disciplina.
+# 📘 Gerenciador de Notas
 
-✨ Funcionalidades
-  📅 Criação de blocos por ano letivo (ex: 2024, 2025...)
-  📘 Cadastro de matérias com média necessária para aprovação
-  📝 Registro de notas por matéria
-  🧮 Cálculo automático da média e status de aprovação
-  🧹 Edição e exclusão de notas e matérias
-  📊 Visualização de gráficos de desempenho
-  📄 Tela de resumo geral com status de todas as matérias
+Um aplicativo de **gerenciamento de notas escolares** desenvolvido em **React Native**.  
+Ele ajuda estudantes (ou professores) a organizarem matérias, registrarem notas e acompanharem o desempenho ao longo do tempo.
 
-🧠 Tecnologias utilizadas:
-- React Native
-- AsyncStorage (banco de dados local)
-- React Navigation
-- React Native Chart Kit (gráficos)
+---
 
-📷 Capturas de Tela
-<p></p>
+## ✨ Funcionalidades
+
+### 🏠 HomeScreen
+- Exibe os **anos cadastrados** (ex: 2023, 2024...).
+- Permite **adicionar** ou **excluir** anos.
+- Botão para acessar o **Resumo Geral** de todas as matérias.
+
+### 📚 AnoScreen
+- Dentro de cada ano, é possível cadastrar **matérias**.
+- Cada matéria possui:
+  - Nome
+  - Média necessária para aprovação
+  - Banner personalizado (imagem da galeria)
+- Opção de excluir matérias.
+- Acesso para registrar notas em cada matéria.
+
+### ✏️ MateriaScreen
+- Registro de notas da matéria selecionada.
+- Funções disponíveis:
+  - Adicionar nova nota
+  - Editar notas existentes
+  - Excluir notas
+- Cálculo automático da **média atual**.
+- Status de **Aprovado** ✅ ou **Reprovado** ❌ de acordo com a média configurada.
+- Gráfico de linha mostrando a evolução das notas ao longo do tempo.
+
+### 📊 ResumoScreen
+- Mostra um **resumo geral** de todos os anos e matérias cadastrados.
+- Exibe:
+  - Ano
+  - Nome da matéria
+  - Média mínima exigida
+  - Média atual calculada
+  - Status final (**Aprovado** ou **Reprovado**)
+
+---
+
+## 🛠️ Tecnologias utilizadas
+- [React Native](https://reactnative.dev/)
+- [Expo](https://expo.dev/)
+- [React Navigation](https://reactnavigation.org/) – Navegação entre telas
+- [AsyncStorage](https://react-native-async-storage.github.io/async-storage/) – Armazenamento local
+- [react-native-chart-kit](https://github.com/indiespirit/react-native-chart-kit) – Gráfico de evolução das notas
+
+---
+
+## 📸 Preview
+*<p></p>
 <div style="display: inline-block;">
         <img src="https://github.com/MarcellCosta31/GerenciadorNotas/blob/master/imagens/1.jpeg" alt="Example Image" style="width: 200px;">
         <img src="https://github.com/MarcellCosta31/GerenciadorNotas/blob/master/imagens/2.jpeg" alt="Example Image" style="width: 200px;">
@@ -28,9 +63,15 @@ Gerenciador de Notas é um aplicativo mobile desenvolvido em React Native com ba
         <img src="https://github.com/MarcellCosta31/GerenciadorNotas/blob/master/imagens/5.jpeg" alt="Example Image" style="width: 200px;">
         <img src="https://github.com/MarcellCosta31/GerenciadorNotas/blob/master/imagens/6.jpeg" alt="Example Image" style="width: 200px;">
     </div>
-<p></p>
+<p></p>*
 
-🚀 Em breve
-- Notificações de desempenho
-- Backup e sincronização com a nuvem
-- Personalização de temas
+---
+
+## 🚀 Como rodar o projeto
+
+1. Clone este repositório:
+   ```bash
+   git clone https://github.com/seu-usuario/gerenciador-notas.git
+   cd GerenciadorNotas
+   npm install
+   expo start
